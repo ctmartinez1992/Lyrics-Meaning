@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ band.name }} · Lyrics Meaning{% endblock %}
+
+{% block content %}
+<p class="text-sm text-slate-400 mb-2"><a href="/" class="hover:text-white">Bands</a></p>
+<h1 class="text-3xl font-bold mb-6">{{ band.name }}</h1>
+<div class="space-y-3">
+  {% for album in albums %}
+    <div class="rounded-lg border border-slate-800 p-4 bg-slate-900">
+      <a class="text-lg text-cyan-300 hover:text-cyan-200" href="{% url 'public_site:album-detail' album.id %}">
+        {{ album.title }}
+      </a>
+      {% if album.release_date %}
+        <p class="text-sm text-slate-400">{{ album.release_date }}</p>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p class="text-slate-400">No albums yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

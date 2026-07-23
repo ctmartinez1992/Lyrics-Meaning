@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Bands · Lyrics Meaning{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Bands</h1>
+<ul class="space-y-3">
+  {% for band in bands %}
+    <li>
+      <a class="text-cyan-300 hover:text-cyan-200" href="{% url 'public_site:band-detail' band.slug %}">
+        {{ band.name }}
+      </a>
+    </li>
+  {% empty %}
+    <li class="text-slate-400">No bands yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

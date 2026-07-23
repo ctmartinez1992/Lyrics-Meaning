@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ song.title }} · Lyrics Meaning{% endblock %}
+
+{% block content %}
+<p class="text-sm text-slate-400 mb-2">
+  <a href="{% url 'public_site:album-detail' song.album.id %}" class="hover:text-white">{{ song.album.title }}</a>
+  ·
+  <a href="{% url 'public_site:band-detail' song.album.band.slug %}" class="hover:text-white">{{ song.album.band.name }}</a>
+</p>
+<h1 class="text-3xl font-bold mb-6">{{ song.title }}</h1>
+
+<div class="grid md:grid-cols-2 gap-6">
+  <section class="rounded-lg border border-slate-800 p-4 bg-slate-900">
+    <h2 class="text-xl font-semibold mb-3">Lyrics</h2>
+    {% if current_lyrics %}
+      <div class="space-y-1">
+        {% for line in lines %}
+          {% if line.is_separator %}
+            <div class="h-4" aria-hidden="true"></div>
+          {% else %}
+            <p><span class="text-slate-500">{{ line.line_number }}.</span> {{ line.text }}</p>
+          {% endif %}
+        {% empty %}
+          <p class="whitespace-pre-wrap">{{ current_lyrics.lyrics_text }}</p>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-slate-400">No lyrics available yet.</p>
+    {% endif %}
+  </section>
+
+  <section class="rounded-lg border border-slate-800 p-4 bg-slate-900">
+    <h2 class="text-xl font-semibold mb-3">Meaning Analysis</h2>
+    {% if analysis_result %}
+      <p class="mb-4">{{ analysis_result.summary }}</p>
+      <h3 class="font-semibold mb-2">Key themes</h3>
+      <ul class="list-disc list-inside text-slate-200">
+        {% for theme in analysis_result.key_themes %}
+          <li>{{ theme }}</li>
+        {% endfor %}
+      </ul>
+      {% if analysis_sections %}
+        <div class="mt-5 space-y-4">
+          {% for section in analysis_sections %}
+            <div>
+              <h3 class="font-semibold mb-1">{{ section.title }}</h3>
+              {% if section.items %}
+                <ul class="list-disc list-inside text-slate-200">
+                  {% for item in section.items %}
+                    <li>{{ item }}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="text-slate-100">{{ section.text }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if analysis_citations %}
+        <div class="mt-5">
+          <h3 class="font-semibold mb-2">Sources</h3>
+          <ul class="space-y-2">
+            {% for citation in analysis_citations %}
+              <li class="text-sm text-slate-300">
+                <a href="{{ citation.url }}" class="underline hover:text-white" rel="noopener noreferrer" target="_blank">{{ citation.title }}</a>
+                {% if citation.excerpt %}
+                  <p class="text-slate-400">{{ citation.excerpt }}</p>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% else %}
+      <p class="text-slate-400">Analysis not yet available.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

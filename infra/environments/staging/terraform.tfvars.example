@@ -1,0 +1,10 @@
+aws_region             = "eu-west-1"
+vpc_cidr               = "10.20.0.0/16"
+public_subnet_cidrs    = ["10.20.1.0/24", "10.20.2.0/24"]
+private_subnet_cidrs   = ["10.20.11.0/24", "10.20.12.0/24"]
+db_name                = "lyrics_meaning"
+db_username            = "lyrics_meaning"
+db_password            = "replace-me"
+django_secret_key      = "replace-me"
+db_security_group_ids  = ["sg-xxxx"]
+app_security_group_ids = ["sg-yyyy"]
